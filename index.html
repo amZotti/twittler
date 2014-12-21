@@ -10,13 +10,21 @@
       $(document).ready(function(){
         var $body = $('body');
         $body.html('');
-        
-        setInterval(function() { 
+
+        setInterval(function() {
           var index = streams.home.length - 1;
           while(index >= 0){
             var tweet = streams.home[index];
-            var $tweet = $('<div></div>');
-            $tweet.text('@' + tweet.user + ': ' + tweet.message);
+
+            var $tweet = $('<div><p>' +
+              '@' +
+              tweet.user +
+              ': ' +
+              tweet.message +
+              '<br>' +
+              tweet.created_at +
+              '</p></div>');
+
             $tweet.appendTo($body);
             index -= 1;
           }
