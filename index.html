@@ -3,6 +3,7 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <script src="underscore.js"></script>
     <link rel="stylesheet" type="text/css" href="main.css"></script>
   </head>
   <body>
@@ -10,9 +11,13 @@
       <div id="heading">
         <h1>Welcome to Twittler!</h1>
       </div>
-      <h2>Your Tweets</h2>
+      <h2>Tweets</h2>
+      <div id="tweets">
+      </div>
     </div>
     <script>
+
+      var allTweets = [];
       var displayTweets = function() {
         generateTweets();
         setInterval(generateTweets, 3000);
@@ -24,17 +29,32 @@
           var tweet = streams.home[index];
           var $tweet = $('<div class="tweet"><p>' +
           '@' +
+          "<a href='#'>" +
           tweet.user +
+          "</a>" +
           ': ' +
           tweet.message +
           '<br>' +
           tweet.created_at +
           '</p></div>');
-          $tweet.appendTo($("#master"));
+          $tweet.appendTo($("#tweets"));
           index -= 1;
         }
+        allTweets.push(streams.home);
         streams.home = [];
+        $("a").on("click", function(e) {
+          var username = e.target.innerHTML;
+          getTweetsByUser(username);
+          e.preventDefault();
+        });
       }
+
+      var getTweetsByUser = function(username) { 
+        allTweets = _.flatten(allTweets);
+        streams.home = _.where(allTweets, {user: username});
+        $("#tweets").empty();
+        generateTweets();
+      };
 
       $(document).ready(displayTweets);
     </script>
