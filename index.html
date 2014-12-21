@@ -3,35 +3,40 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <link rel="stylesheet" type="text/css" href="main.css"></script>
   </head>
   <body>
+    <div id="master">
+      <div id="heading">
+        <h1>Welcome to Twittler!</h1>
+      </div>
+      <h2>Your Tweets</h2>
+    </div>
     <script>
+      var displayTweets = function() {
+        generateTweets();
+        setInterval(generateTweets, 3000);
+      }
 
-      $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+      var generateTweets = function() {
+        var index = streams.home.length - 1;
+        while(index >= 0){
+          var tweet = streams.home[index];
+          var $tweet = $('<div class="tweet"><p>' +
+          '@' +
+          tweet.user +
+          ': ' +
+          tweet.message +
+          '<br>' +
+          tweet.created_at +
+          '</p></div>');
+          $tweet.appendTo($("#master"));
+          index -= 1;
+        }
+        streams.home = [];
+      }
 
-        setInterval(function() {
-          var index = streams.home.length - 1;
-          while(index >= 0){
-            var tweet = streams.home[index];
-
-            var $tweet = $('<div><p>' +
-              '@' +
-              tweet.user +
-              ': ' +
-              tweet.message +
-              '<br>' +
-              tweet.created_at +
-              '</p></div>');
-
-            $tweet.appendTo($body);
-            index -= 1;
-          }
-          streams.home = [];
-        }, 3000);
-      });
-
+      $(document).ready(displayTweets);
     </script>
   </body>
 </html>
