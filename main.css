@@ -26,3 +26,12 @@ body {
   border-style: solid;
   margin: 15px auto 10px auto;
 }
+
+input {
+  width: 400px;
+  height: 40px;
+}
+
+button {
+  height: 40px;
+}
