@@ -23,7 +23,7 @@
       var allTweets = [];
       var displayTweets = function() {
         generateTweets();
-        setInterval(generateTweets, 15000);
+        setInterval(generateTweets, 5000);
       };
 
       var generateTweets = function() {
@@ -55,7 +55,7 @@
         });
       }
 
-      var getTweetsByUser = function(username) { 
+      var getTweetsByUser = function(username) {
         $("#tweets").empty();
         setTweetsDisplayOff(allTweets);
         setTimeout(function() {
@@ -65,6 +65,14 @@
           generateTweets();
             }, 10);
       };
+
+        $("button").on("click", function(e) {
+            var field = $("input");
+            var text = field.val();
+            field.val("");
+            writeTweet(text);
+            e.preventDefault();
+        });
 
       var getTweetTime = function(time) {
         return jQuery.timeago(time);
