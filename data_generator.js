@@ -11,10 +11,14 @@ streams.users.shawndrost = [];
 streams.users.sharksforcheap = [];
 streams.users.mracus = [];
 streams.users.douglascalhoun = [];
+streams.users.user = [];
+window.visitor = "user";
 window.users = Object.keys(streams.users);
 
 // utility function for adding tweets to our data structures
 var addTweet = function(newTweet){
+  newTweet.created_at = new Date();
+  newTweet.displayed = false;
   var username = newTweet.user;
   streams.users[username].push(newTweet);
   streams.home.push(newTweet);
@@ -41,9 +45,10 @@ var randomMessage = function(){
 var generateRandomTweet = function(){
   var tweet = {};
   tweet.user = randomElement(users);
-  tweet.message = randomMessage();
-  tweet.created_at = new Date();
-  addTweet(tweet);
+  if (tweet.user != visitor) {;
+    tweet.message = randomMessage();
+    addTweet(tweet);
+  }
 };
 
 for(var i = 0; i < 10; i++){

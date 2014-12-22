@@ -21,13 +21,15 @@
       var allTweets = [];
       var displayTweets = function() {
         generateTweets();
-        setInterval(generateTweets, 30000);
-      }
+        setInterval(generateTweets, 15000);
+      };
 
       var generateTweets = function() {
         var index = streams.home.length - 1;
         while(index >= 0){
           var tweet = streams.home[index];
+          if (tweet.displayed == false) {
+            tweet.displayed = true;
           var $tweet = $('<div class="tweet"><p>' +
           '@' +
           "<a href='#'>" +
@@ -39,11 +41,12 @@
           getTweetTime(tweet.created_at) +
           '</p></div>');
           $tweet.appendTo($("#tweets"));
+          }
           index -= 1;
         }
         allTweets.push(streams.home);
         streams.home = [];
-        $("a").on("click", function(e) {
+        $(".tweet").on("click","a", function(e) {
           var username = e.target.innerHTML;
           getTweetsByUser(username);
           e.preventDefault();
@@ -51,14 +54,31 @@
       }
 
       var getTweetsByUser = function(username) { 
-        allTweets = _.flatten(allTweets);
-        streams.home = _.where(allTweets, {user: username});
         $("#tweets").empty();
-        generateTweets();
+        setTweetsDisplayOff(allTweets);
+        setTimeout(function() {
+          allTweets = _.flatten(allTweets);
+          streams.home = _.where(allTweets, {user: username});
+          setTweetsDisplayOff(streams.home);
+          generateTweets();
+            }, 10);
       };
 
       var getTweetTime = function(time) {
         return jQuery.timeago(time);
+      };
+
+
+      var setTweetsDisplayOff = function(tweets) {
+        _.each(tweets, function(tweet) {
+          tweet.displayed = false;
+        });
+      };
+
+      var setTweetsDisplayOn = function(tweets) {
+        _.each(tweets, function(tweet) {
+          displayedOn(tweet);
+        });
       };
 
       $(document).ready(displayTweets);
