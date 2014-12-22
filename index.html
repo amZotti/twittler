@@ -4,7 +4,7 @@
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
     <script src="underscore.js"></script>
-    <script src="moment.min.js"></script>
+    <script src="jquery.timeago.js"></script>
     <link rel="stylesheet" type="text/css" href="main.css"></script>
   </head>
   <body>
@@ -21,7 +21,7 @@
       var allTweets = [];
       var displayTweets = function() {
         generateTweets();
-        setInterval(generateTweets, 3000);
+        setInterval(generateTweets, 30000);
       }
 
       var generateTweets = function() {
@@ -36,7 +36,7 @@
           ': ' +
           tweet.message +
           '<br>' +
-          tweet.created_at +
+          getTweetTime(tweet.created_at) +
           '</p></div>');
           $tweet.appendTo($("#tweets"));
           index -= 1;
@@ -55,6 +55,10 @@
         streams.home = _.where(allTweets, {user: username});
         $("#tweets").empty();
         generateTweets();
+      };
+
+      var getTweetTime = function(time) {
+        return jQuery.timeago(time);
       };
 
       $(document).ready(displayTweets);
